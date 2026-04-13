@@ -551,6 +551,27 @@ section {
 .form-submit:hover { background: rgba(255,255,255,0.05); border-color: var(--border-hi); }
 .form-submit-arrow { font-size: 20px; transition: transform 0.25s; }
 .form-submit:hover .form-submit-arrow { transform: translateX(5px); }
+.form-submit:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+.form-submit:disabled:hover {
+  background: transparent;
+  border-color: var(--border-mid);
+}
+.form-submit:disabled .form-submit-arrow { transform: none; }
+.form-status {
+  min-height: 16px;
+  margin-top: 14px;
+  font-size: 8px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--muted);
+}
+.form-status.sending { color: var(--muted2); }
+.form-status.success { color: #a5f4c8; }
+.form-status.error { color: #ff9393; }
 
 /* ---- FOOTER ---- */
 footer {
