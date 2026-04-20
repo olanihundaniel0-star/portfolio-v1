@@ -4,7 +4,7 @@ export interface Project {
   name: string;
   desc: string;
   stack: string[];
-  type: 'stock' | 'portfolio';
+  type: 'stock' | 'portfolio' | 'productivity';
   link: string;
   image: string;
 }
@@ -29,5 +29,15 @@ export const PROJECTS: Project[] = [
     type: 'portfolio',
     link: '/',
     image: '/images/portfolio-preview.png',
+  },
+  {
+    index: '03',
+    year: '2026',
+    name: 'Whispr',
+    desc: 'Frontend - An AI-powered Accountability Partner, A Telegram mini-app designed to help users stick to commitments- powered by CLAUDE',
+    stack: ['React', 'React Query', 'Vite', 'Vanilla CSS', 'Telegram Mini App SDK'],
+    type: 'productivity',
+    link: 'https://whispr-mini.vercel.app',
+    image: '/images/whispr-preview.png',
   },
 ];
