@@ -1,6 +1,14 @@
+import { useEffect, useState } from 'react';
+
 export default function Hero() {
+  const [fontsReady, setFontsReady] = useState(false);
+
+  useEffect(() => {
+    document.fonts.ready.then(() => setFontsReady(true));
+  }, []);
+
   return (
-    <section id="hero">
+    <section id="hero" className={fontsReady ? 'fonts-ready' : ''}>
       <div className="hero-bg-text">NIFE</div>
       <p className="hero-eyebrow">I am</p>
       <span className="hero-name">NIFE</span>

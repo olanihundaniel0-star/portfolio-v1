@@ -194,6 +194,7 @@ section {
   color: #fff;
   letter-spacing: 4px;
   display: block;
+  opacity: 0;
 }
 .hero-name-outline {
   font-family: 'Bebas Neue';
@@ -203,6 +204,20 @@ section {
   -webkit-text-stroke: 1px rgba(255,255,255,0.18);
   letter-spacing: 4px;
   display: block;
+  opacity: 0;
+}
+
+@keyframes motionBlurIn {
+  0%   { filter: blur(36px); transform: translateX(-55px); opacity: 0; }
+  55%  { opacity: 1; }
+  100% { filter: blur(0px);  transform: translateX(0);     opacity: 1; }
+}
+
+#hero.fonts-ready .hero-name {
+  animation: motionBlurIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0s both;
+}
+#hero.fonts-ready .hero-name-outline {
+  animation: motionBlurIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both;
 }
 .hero-sub {
   margin-top: 28px;
@@ -530,6 +545,14 @@ section {
   text-transform: uppercase; font-weight: 700;
 }
 .form-group textarea { resize: none; height: 120px; }
+.form-honeypot {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
 .form-submit {
   margin-top: 2px;
   width: 100%;

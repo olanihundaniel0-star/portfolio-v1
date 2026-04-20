@@ -1,73 +1,81 @@
-# React + TypeScript + Vite
+# Portfolio V1
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Single-page React + TypeScript portfolio built with Vite.
 
-Currently, two official plugins are available:
+## Scripts
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- `npm run dev` - Start Vite dev server.
+- `npm run build` - Type-check and build for production.
+- `npm run lint` - Run ESLint.
+- `npm run preview` - Preview production build.
 
-## React Compiler
+## Contact Messaging (No Redirect)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+The contact form now submits to an API endpoint and does not open an email client.
 
-## Expanding the ESLint configuration
+Submission flow:
+1. Browser posts to `/api/contact` (or `VITE_CONTACT_ENDPOINT` if set).
+2. API validates and sanitizes payload.
+3. API writes message to Supabase.
+4. API sends notification email through Resend.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Setup
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### 1. Supabase table
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Run SQL in your Supabase SQL editor:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- `supabase/contact_messages.sql`
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2. Resend sender
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Create a Resend API key and verify a sender/domain.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+For quick testing, `onboarding@resend.dev` works in development.
+
+### 3. Environment variables
+
+Copy `.env.example` values into your environment.
+
+Required server-side vars:
+- `SUPABASE_URL`
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `RESEND_API_KEY`
+- `CONTACT_FROM_EMAIL`
+- `CONTACT_TO_EMAIL`
+
+Optional vars:
+- `SUPABASE_CONTACT_TABLE` (default: `contact_messages`)
+- `CONTACT_RATE_LIMIT_WINDOW_MS` (default: `60000`)
+- `CONTACT_RATE_LIMIT_MAX` (default: `8`)
+- `VITE_CONTACT_ENDPOINT` (default: `/api/contact`)
+
+## Local development notes
+
+This repo uses Vite for frontend dev and Vercel Serverless format for API (`api/contact.ts`).
+
+Recommended local full-stack test:
+1. Add env vars to local environment.
+2. Run with Vercel dev tooling so `/api/contact` is available.
+3. Submit the contact form and verify:
+   - no redirect happens
+   - a row appears in Supabase
+   - a notification email is delivered
+
+If you only run `npm run dev`, Vite serves frontend assets but does not run Vercel serverless functions by itself.
+
+## Deploy (Vercel)
+
+1. Import repo into Vercel.
+2. Add all required environment variables in project settings.
+3. Deploy.
+4. Smoke test form submission in production.
+
+## Troubleshooting
+
+- `Contact service is not configured yet`:
+  Missing server env variables in Vercel.
+- `Message failed to send`:
+  Check function logs for Supabase or Resend API errors.
+- Too many requests error (`429`):
+  Rate limiter hit. Increase `CONTACT_RATE_LIMIT_MAX` for your needs.

@@ -6,6 +6,7 @@ type ContactFormData = {
   email: string;
   subject: string;
   message: string;
+  website: string;
 };
 
 type SubmitStatus = {
@@ -18,6 +19,7 @@ const INITIAL_FORM_DATA: ContactFormData = {
   email: '',
   subject: '',
   message: '',
+  website: '',
 };
 
 export default function Contact() {
@@ -27,7 +29,9 @@ export default function Contact() {
     message: '',
   });
 
-  const endpoint = import.meta.env.VITE_CONTACT_ENDPOINT as string | undefined;
+  const endpoint =
+    (import.meta.env.VITE_CONTACT_ENDPOINT as string | undefined)?.trim() ||
+    '/api/contact';
 
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -60,7 +64,7 @@ export default function Contact() {
   };
 
   const submitToEndpoint = async (payload: ContactFormData) => {
-    const response = await fetch(endpoint as string, {
+    const response = await fetch(endpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -69,29 +73,25 @@ export default function Contact() {
       body: JSON.stringify(payload),
     });
 
-    if (!response.ok) {
-      let errorMessage = 'Message failed to send. Please try again.';
+    let message = '';
 
-      try {
-        const data = (await response.json()) as { message?: string };
-        if (typeof data.message === 'string' && data.message.trim()) {
-          errorMessage = data.message;
-        }
-      } catch {
-        // Ignore malformed server error payloads.
+    try {
+      const data = (await response.json()) as { message?: string };
+      if (typeof data.message === 'string' && data.message.trim()) {
+        message = data.message;
       }
+    } catch {
+      // Ignore malformed server payloads.
+    }
+
+    if (!response.ok) {
+      const errorMessage =
+        message || 'Message failed to send. Please try again.';
 
       throw new Error(errorMessage);
     }
-  };
 
-  const submitViaMailto = (payload: ContactFormData) => {
-    const subject = encodeURIComponent(payload.subject.trim());
-    const body = encodeURIComponent(
-      `Name: ${payload.name.trim()}\nEmail: ${payload.email.trim()}\n\n${payload.message.trim()}`
-    );
-
-    window.location.href = `mailto:${CONTACT_INFO.email}?subject=${subject}&body=${body}`;
+    return message || 'Message sent successfully. I will reply soon.';
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -108,24 +108,17 @@ export default function Contact() {
       email: formData.email.trim(),
       subject: formData.subject.trim(),
       message: formData.message.trim(),
+      website: formData.website.trim(),
     };
 
     setStatus({ type: 'sending', message: 'Sending message...' });
 
     try {
-      if (endpoint && endpoint.trim()) {
-        await submitToEndpoint(payload);
-        setStatus({
-          type: 'success',
-          message: 'Message sent successfully. I will reply soon.',
-        });
-      } else {
-        submitViaMailto(payload);
-        setStatus({
-          type: 'success',
-          message: 'Your email app has been opened with the message draft.',
-        });
-      }
+      const successMessage = await submitToEndpoint(payload);
+      setStatus({
+        type: 'success',
+        message: successMessage,
+      });
 
       setFormData(INITIAL_FORM_DATA);
     } catch (error) {
@@ -209,6 +202,16 @@ export default function Contact() {
               required
             />
           </div>
+          <input
+            type="text"
+            name="website"
+            value={formData.website}
+            onChange={handleChange}
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            className="form-honeypot"
+          />
           <button
             className="form-submit"
             type="submit"
