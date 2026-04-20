@@ -7,6 +7,8 @@ export interface Project {
   type: 'stock' | 'portfolio' | 'productivity';
   link: string;
   image: string;
+  imageFilter?: string;
+  imagePosition?: string;
 }
 
 export const PROJECTS: Project[] = [
@@ -34,10 +36,12 @@ export const PROJECTS: Project[] = [
     index: '03',
     year: '2026',
     name: 'Whispr',
-    desc: 'Frontend - An AI-powered Accountability Partner, A Telegram mini-app designed to help users stick to commitments- powered by CLAUDE',
+    desc: 'Frontend - An AI-powered accountability partner built as a Telegram mini-app. Helps users stick to commitments through structured reminders — powered by Claude.',
     stack: ['React', 'React Query', 'Vite', 'Vanilla CSS', 'Telegram Mini App SDK'],
     type: 'productivity',
     link: 'https://whispr-mini.vercel.app',
     image: '/images/whispr-preview.png',
+    imagePosition: 'center top',
+    imageFilter: 'brightness(1.2) contrast(1.05) saturate(1.05)',
   },
 ];
