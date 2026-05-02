@@ -1,5 +1,5 @@
 import { type ChangeEvent, type FormEvent, useState } from 'react';
-import { CONTACT_INFO } from '../data/constants';
+import { CONTACT_INFO, SOCIAL_LINKS } from '../data/constants';
 
 type ContactFormData = {
   name: string;
@@ -159,6 +159,17 @@ export default function Contact() {
           </div>
         </div>
         <form className="form-wrap reveal reveal-d2" onSubmit={handleSubmit}>
+          <p className="form-note">
+            Note: The message form is offline right now. Please email me at{' '}
+            <a href={`mailto:${CONTACT_INFO.email}`}>
+              {CONTACT_INFO.email}
+            </a>{' '}
+            or DM me on{' '}
+            <a href={SOCIAL_LINKS.linkedin} target="_blank" rel="noreferrer">
+              LinkedIn
+            </a>
+            .
+          </p>
           <div className="form-row">
             <div className="form-group">
               <input
