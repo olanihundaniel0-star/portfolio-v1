@@ -40,7 +40,7 @@ export default function Cursor() {
 
     const attachListeners = () => {
       document
-        .querySelectorAll('a,button,.project-card,.skill-card,.nav-dot')
+        .querySelectorAll('a,button,.project-card,.tech-item,.nav-dot')
         .forEach((el) => {
           el.addEventListener('mouseenter', over);
           el.addEventListener('mouseleave', out);

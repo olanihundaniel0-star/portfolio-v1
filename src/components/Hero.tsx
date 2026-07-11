@@ -24,8 +24,9 @@ export default function Hero() {
       <div className="hero-copy">
         <p className="hero-eyebrow">I am</p>
         <span className="hero-name">NIFE</span>
-        <span className="hero-name-outline" data-text="BUILDS">
-          BUILDS
+        <span className="hero-midword">I</span>
+        <span className="hero-name-outline" data-text="BUILD">
+          BUILD
           <span className="hero-build-snippet snippet-a" aria-hidden="true">
             {'<Hero />'}
           </span>
