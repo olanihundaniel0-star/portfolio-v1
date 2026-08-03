@@ -17,9 +17,15 @@ export default function About() {
             tell stories through interactive webpages. I don't just build things.
             I build things that feel like something.
           </p>
-          <span className="about-cta">
+          <a
+            href="/Olanihun-Daniel-Resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="about-cta"
+            style={{ textDecoration: 'none', color: 'inherit', cursor: 'pointer' }}
+          >
             Download CV <span>↗</span>
-          </span>
+          </a>
         </div>
         <div className="about-right reveal reveal-d2">
           <div className="stat-card-row">

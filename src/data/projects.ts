@@ -15,6 +15,18 @@ export const PROJECTS: Project[] = [
   {
     index: '01',
     year: '2026',
+    name: 'EduNav',
+    desc: 'A real-time, AI-powered study space finder for university students. EduNav eliminates campus guesswork by crowdsourcing live capacity data — students check in and out, updating availability instantly via Realtime subscriptions. Gemini AI matches natural language needs to spaces and auto-categorizes facility issues with Vision AI. Built for the Google Developer Buildathon.',
+    stack: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'Supabase', 'Google Gemini API', 'Framer Motion'],
+    type: 'productivity',
+    link: 'https://edu-nav-app.vercel.app/',
+    image: '/images/edunav-preview.png',
+    imagePosition: 'center top',
+    imageFilter: 'brightness(1.2) contrast(1.05) saturate(1.05)',
+  },
+  {
+    index: '02',
+    year: '2026',
     name: 'ShieldPay',
     desc: 'Frontend - A real-time fraud detection layer for Squad merchants built for the Squad GTCO Hackathon 3.0. It combines a deterministic ML ensemble with a RAG-enabled LLM agent to investigate anomalies and automate refunds.',
     stack: ['FastAPI', 'React', 'Python', 'XGBoost', 'Groq LLM', 'ChromaDB'],
@@ -25,7 +37,7 @@ export const PROJECTS: Project[] = [
     imageFilter: 'brightness(1.2) contrast(1.05) saturate(1.05)',
   },
   {
-    index: '02',
+    index: '03',
     year: '2025',
     name: 'StockPulse',
     desc: 'A digital inventory management platform that tracks stock levels in real-time, manages product catalogs, handles user roles, and generates business reports. Built full-stack with a focus on data clarity and speed.',
@@ -35,7 +47,7 @@ export const PROJECTS: Project[] = [
     image: '/images/stockpulse-preview.png',
   },
   {
-    index: '03',
+    index: '04',
     year: '2025',
     name: 'Portfolio V1',
     desc: 'My personal portfolio — a React + TypeScript monochrome site built to tell my story cleanly. Featuring scroll-driven animations, a custom cursor, and a brutalist aesthetic with premium polish.',
@@ -45,7 +57,7 @@ export const PROJECTS: Project[] = [
     image: '/images/portfolio-preview.png',
   },
   {
-    index: '04',
+    index: '05',
     year: '2026',
     name: 'Whispr',
     desc: 'Frontend - An AI-powered accountability partner built as a Telegram mini-app. Helps users stick to commitments through structured reminders — powered by Claude.',
