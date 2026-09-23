@@ -50,6 +50,8 @@ export default function Projects() {
                 src={p.image}
                 alt={`${p.name} preview`}
                 className="proj-preview-img"
+                loading="lazy"
+                decoding="async"
                 style={{
                   filter: p.imageFilter ?? 'none',
                   objectPosition: p.imagePosition ?? 'top left',

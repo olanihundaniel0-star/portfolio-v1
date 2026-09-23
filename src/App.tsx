@@ -1,82 +1,31 @@
-import { useState, useEffect, useCallback } from 'react';
-import { SECTIONS } from './data/constants';
-import Cursor from './components/Cursor';
-import Nav from './components/Nav';
-import Hero from './components/Hero';
-import About from './components/About';
-import Skills from './components/Skills';
-import Projects from './components/Projects';
-import Contact from './components/Contact';
-import Footer from './components/Footer';
+import { Suspense, lazy, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import './App.css';
 
-export default function App() {
-  const [active, setActive] = useState(0);
-  const [scrolled, setScrolled] = useState(false);
+const Home = lazy(() => import('./pages/Home'));
+const Wall = lazy(() => import('./pages/Wall'));
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
 
   useEffect(() => {
-    // Section tracking via IntersectionObserver
-    const sectionObs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const idx = SECTIONS.indexOf(
-              entry.target.id as (typeof SECTIONS)[number]
-            );
-            if (idx >= 0) setActive(idx);
-          }
-        });
-      },
-      { threshold: 0.4 }
-    );
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
-    SECTIONS.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) sectionObs.observe(el);
-    });
+  return null;
+}
 
-    // Reveal-on-scroll observer
-    const revealObs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            e.target.classList.add('visible');
-            revealObs.unobserve(e.target);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    document.querySelectorAll('.reveal').forEach((el) => revealObs.observe(el));
-
-    // Scroll detection for nav background
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener('scroll', onScroll);
-
-    return () => {
-      sectionObs.disconnect();
-      revealObs.disconnect();
-      window.removeEventListener('scroll', onScroll);
-    };
-  }, []);
-
-  const onDotClick = useCallback((id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-  }, []);
-
+export default function App() {
   return (
-    <>
-      <Cursor />
-      <Nav active={active} onDotClick={onDotClick} scrolled={scrolled} />
-      <main>
-        <Hero />
-        <About />
-        <Skills />
-        <Projects />
-        <Contact />
-      </main>
-      <Footer />
-    </>
+    <BrowserRouter>
+      <ScrollToTop />
+      <Suspense fallback={null}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/wall" element={<Wall />} />
+          <Route path="*" element={<Home />} />
+        </Routes>
+      </Suspense>
+    </BrowserRouter>
   );
 }

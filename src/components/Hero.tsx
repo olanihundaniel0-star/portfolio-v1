@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { PROFILE } from '../data/profile';
+import AsciiVeil from './AsciiVeil';
 
 const CURRENT_TAGS = [
-  '200L - UNILAG',
+  '300L - UNILAG',
   'Software Engineer',
   'Problem Solver',
   'CS Undergrad',
@@ -11,11 +12,20 @@ const CURRENT_TAGS = [
 
 export default function Hero() {
   const [fontsReady, setFontsReady] = useState(false);
+  const [buildHover, setBuildHover] = useState(false);
   const hasPortrait = PROFILE.portraitSrc.trim().length > 0;
 
   useEffect(() => {
     document.fonts.ready.then(() => setFontsReady(true));
   }, []);
+
+  const handleBuildEnter = () => {
+    setBuildHover(true);
+  };
+
+  const handleBuildLeave = () => {
+    setBuildHover(false);
+  };
 
   return (
     <section id="hero" className={fontsReady ? 'fonts-ready' : ''}>
@@ -25,8 +35,22 @@ export default function Hero() {
         <p className="hero-eyebrow">I am</p>
         <span className="hero-name">NIFE</span>
         <span className="hero-midword">I</span>
-        <span className="hero-name-outline" data-text="BUILD">
+        <span
+          className={`hero-name-outline${buildHover ? ' is-active' : ''}`}
+          data-text="BUILD"
+          onMouseEnter={handleBuildEnter}
+          onMouseLeave={handleBuildLeave}
+        >
           BUILD
+          <span className="hero-build-waves" aria-hidden="true">
+            <AsciiVeil
+              text="BUILD"
+              fontFamily="Bebas Neue, sans-serif"
+              cellSize={6}
+              speed={1}
+              hovered={buildHover}
+            />
+          </span>
           <span className="hero-build-snippet snippet-a" aria-hidden="true">
             {'<Hero />'}
           </span>
@@ -64,7 +88,11 @@ export default function Hero() {
       >
         <div className="hero-portrait-media">
           {hasPortrait ? (
-            <img src={PROFILE.portraitSrc} alt={PROFILE.portraitAlt} />
+            <img
+              src={PROFILE.portraitSrc}
+              alt={PROFILE.portraitAlt}
+              fetchPriority="high"
+            />
           ) : (
             <div className="hero-portrait-placeholder" />
           )}

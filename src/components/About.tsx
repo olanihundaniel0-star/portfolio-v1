@@ -12,10 +12,9 @@ export default function About() {
             Story Teller
           </h2>
           <p className="about-body">
-            I'm a 200-level Computer Science undergraduate at the University of
-            Lagos, Nigeria. I solve problems with AI and modern tools — and I
-            tell stories through interactive webpages. I don't just build things.
-            I build things that feel like something.
+            I'm a Software engineer learning to build scalable and reliable
+            systems and interfaces with a feel to them, currently a 300-level
+            Computer Science undergraduate at the University of Lagos, Nigeria.
           </p>
           <a
             href="/Olanihun-Daniel-Resume.pdf"
@@ -30,7 +29,7 @@ export default function About() {
         <div className="about-right reveal reveal-d2">
           <div className="stat-card-row">
             <div className="stat-card">
-              <div className="stat-card-num">200L</div>
+              <div className="stat-card-num">300L</div>
               <div className="stat-card-label">CS · UNILAG</div>
             </div>
             <div className="stat-card">
