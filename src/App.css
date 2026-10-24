@@ -821,6 +821,87 @@ section {
   transform: scale(1.05);
   opacity: 1;
 }
+.proj-preview-cropped {
+  min-height: 150px;
+}
+.proj-preview-cropped .proj-preview-img {
+  position: absolute;
+  inset: 0;
+}
+.proj-full-preview {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
+  pointer-events: none;
+  filter: drop-shadow(0 24px 38px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 0 10px rgba(220, 232, 255, 0.09));
+}
+.proj-full-preview-frame {
+  position: relative;
+  background: linear-gradient(145deg, #242527 0%, #171718 38%, #1b1c1e 100%);
+  padding: 8px;
+  border-radius: 12px;
+  overflow: hidden;
+  transform-origin: center;
+}
+.proj-full-preview-frame::before,
+.proj-full-preview-frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  z-index: 1;
+}
+.proj-full-preview-frame::before {
+  background: linear-gradient(140deg,
+    rgba(235, 242, 255, 0.45),
+    rgba(235, 242, 255, 0.08) 28%,
+    rgba(235, 242, 255, 0.04) 65%,
+    rgba(235, 242, 255, 0.24));
+}
+.proj-full-preview-frame::after {
+  background: linear-gradient(110deg, transparent 35%, rgba(245, 248, 255, 0.7) 49%, transparent 63%);
+  background-size: 300% 100%;
+  opacity: 0;
+  animation: preview-edge-light 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+}
+@keyframes preview-edge-light {
+  0% { background-position: 100% 0; opacity: 0; }
+  20% { opacity: 0.8; }
+  100% { background-position: 0% 0; opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .proj-full-preview-frame::after { animation: none; }
+}
+.proj-full-preview-caption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 5px 14px;
+  color: #a8a8a8;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.proj-full-preview-caption span:first-child {
+  color: #fff;
+  font-weight: 700;
+}
+.proj-full-preview img {
+  display: block;
+  height: min(620px, calc(80vh - 48px));
+  max-width: 80vw;
+  object-fit: contain;
+  border-radius: 5px;
+}
+@media (max-width: 960px) {
+  .proj-full-preview { display: none; }
+}
 .proj-preview-inner { width: 100%; height: 100%; padding: 20px; }
 .proj-window-bar { display: flex; align-items: center; gap: 6px; margin-bottom: 12px; }
 .proj-window-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border-mid); }
@@ -1042,11 +1123,85 @@ footer p {
 }
 
 /* DINO WALKER — patrols the footer top line, links to the wall */
+.dino-sky {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  height: 120px;
+  overflow: hidden;
+  pointer-events: none;
+  mask-image: linear-gradient(transparent, #000 18%, #000 70%, transparent);
+}
+.dino-meteor {
+  --meteor-tail: 52px;
+  position: absolute;
+  top: -6px;
+  left: 22%;
+  width: 6px;
+  height: 6px;
+  opacity: 0;
+  animation: dino-meteor-fall 8s linear 0.4s infinite;
+  animation-play-state: paused;
+}
+.dino-meteor::before {
+  content: '';
+  position: absolute;
+  left: 1px;
+  top: 1px;
+  width: var(--meteor-tail);
+  height: 2px;
+  transform: rotate(-55deg);
+  transform-origin: left center;
+  background: linear-gradient(to right, rgba(226,233,245,0.9), rgba(190,207,232,0.3) 35%, transparent);
+}
+.dino-meteor::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #fff, #bac5d6 60%, #737f90);
+  border-radius: 2px 4px 2px 3px;
+  transform: rotate(25deg);
+  box-shadow: 1px 2px 7px rgba(210,225,250,0.35);
+}
+.dino-meteor:nth-child(2) { left: 48%; animation-duration: 11s; animation-delay: 2.8s; width: 9px; height: 8px; --meteor-tail: 72px; }
+.dino-meteor:nth-child(3) { left: 73%; animation-duration: 9s; animation-delay: 5s; width: 5px; height: 4px; --meteor-tail: 38px; }
+.dino-meteor:nth-child(4) { left: 94%; animation-duration: 13s; animation-delay: 7.2s; width: 11px; height: 9px; --meteor-tail: 86px; }
+.dino-sky[data-running='true'] .dino-meteor { animation-play-state: running; }
+@keyframes dino-meteor-fall {
+  0% { transform: translate3d(0, 0, 0); opacity: 0; }
+  3% { opacity: 0.85; }
+  22% { opacity: 0.7; }
+  28%, 100% { transform: translate3d(-94px, 140px, 0); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dino-sky { display: none; }
+}
+.dino-obstacles {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(100% - 2px);
+  height: 36px;
+  pointer-events: none;
+  color: #858585;
+}
+.dino-cactus {
+  position: absolute;
+  bottom: 0;
+  width: 20px;
+  height: 24px;
+  transform: translateX(-50%);
+}
+.dino-cactus-2 { width: 18px; height: 36px; }
+.dino-cactus-3 { width: 34px; height: 26px; }
 .dino-walker {
   position: absolute;
   left: 0;
   bottom: calc(100% - 2px);
   display: block;
+  width: 44px;
+  height: 48px;
   background: none;
   border: 0;
   padding: 0;
@@ -1054,8 +1209,25 @@ footer p {
   will-change: transform;
   z-index: 2;
 }
+.dino-walker:focus-visible {
+  outline: 1px solid rgba(255,255,255,0.6);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+.dino-shadow {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 25px;
+  height: 2px;
+  background: #fff;
+  border-radius: 50%;
+  pointer-events: none;
+}
 
 .dino-sprite {
+  position: absolute;
+  bottom: 0;
   display: block;
   width: 44px;
   height: 47px;
@@ -1069,7 +1241,7 @@ footer p {
   position: absolute;
   bottom: calc(100% + 6px);
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(calc(-50% + var(--hint-offset, 0px))) translateY(3px);
   font-family: 'Syne', monospace;
   font-size: 9px;
   letter-spacing: 1.6px;
@@ -1081,13 +1253,17 @@ footer p {
   padding: 5px 9px;
   background: rgba(14,14,14,0.85);
   opacity: 0;
-  transition: opacity 0.25s ease;
+  transition: opacity 0.25s ease, transform 0.3s ease;
   pointer-events: none;
 }
 
 .dino-walker:hover .dino-hint,
 .dino-walker:focus-visible .dino-hint {
   opacity: 1;
+  transform: translateX(calc(-50% + var(--hint-offset, 0px))) translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .dino-hint { transition: opacity 0.15s ease; }
 }
 
 /* MESSAGE WALL — plain page, same theme */
